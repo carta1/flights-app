@@ -1,3 +1,11 @@
 <resources>
     <string name="app_name">flights_app</string>
+    <string name="bottom_nav_menu_map">Map</string>
+    <string name="bottom_nav_menu_airport">Airports</string>
+
+    // maps page
+    <string name="maps_page_airports_title">Airports</string>
+    <string name="maps_api_key">AIzaSyBpgP8PaTYP1fEcFC-igdwjxkXJQSBa1PM</string>
+
+
 </resources>

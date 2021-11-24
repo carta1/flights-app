@@ -115,6 +115,7 @@ dependencies {
     implementation "androidx.compose.runtime:runtime:1.1.0-beta03"
     implementation "androidx.compose.runtime:runtime-livedata:1.1.0-beta03"
     implementation "androidx.compose.runtime:runtime-rxjava2:1.1.0-beta03"
+    implementation "androidx.constraintlayout:constraintlayout-compose:1.0.0-rc02"
 
     // testing
     testImplementation 'junit:junit:4.13.2'

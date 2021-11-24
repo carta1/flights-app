@@ -6,10 +6,13 @@ import androidx.activity.compose.setContent
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.*
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Menu
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.style.TextAlign
 import androidx.navigation.NavDestination.Companion.hierarchy
 import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavType
@@ -51,9 +54,19 @@ fun BottomNavigation() {
     val navController = rememberNavController()
     Scaffold(
         topBar = {
-            TopAppBar() {
-                Text(text = "Airports")
-            }
+            TopAppBar(
+               title =  {
+                   Text(
+                       text = "Airports App",
+                       textAlign = TextAlign.Center
+                   )
+               },
+                navigationIcon = {
+                    IconButton(onClick = { }) {
+                        Icon(Icons.Filled.Menu,"")
+                    }
+                },
+            )
         },
         bottomBar = {
             BottomNavigation {

@@ -7,5 +7,13 @@
     <string name="maps_page_airports_title">Airports</string>
     <string name="maps_api_key">AIzaSyBpgP8PaTYP1fEcFC-igdwjxkXJQSBa1PM</string>
 
-
+    // airport details page
+    <string name="airport_details_title">Airport details</string>
+    <string name="airport_details_id">Id:</string>
+    <string name="airport_details_latitude">Latitude:</string>
+    <string name="airport_details_longitude">Longitude:</string>
+    <string name="airport_details_name">Name:</string>
+    <string name="airport_details_city">City:</string>
+    <string name="airport_details_country_id">Country Id:</string>
 </resources>
+

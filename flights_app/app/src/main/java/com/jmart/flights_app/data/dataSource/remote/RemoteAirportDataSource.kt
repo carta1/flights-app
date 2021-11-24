@@ -1,13 +1,16 @@
 package com.jmart.flights_app.data.dataSource.remote
 
 import com.jmart.flights_app.data.dataSource.api.AirportApi
-import com.jmart.flights_app.data.models.Airports
+import com.jmart.flights_app.data.models.Airport
 import com.jmart.flights_app.data.models.Flights
 import timber.log.Timber
 import javax.inject.Inject
+import javax.inject.Singleton
 
+
+@Singleton
 class RemoteAirportDataSource @Inject constructor(private val airportApi: AirportApi) {
-    suspend fun getAirports(): List<Airports>? {
+    suspend fun getAirports(): List<Airport>? {
         return try {
             val response = airportApi.getAirports()
             if (response.isSuccessful) {

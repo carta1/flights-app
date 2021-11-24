@@ -2,6 +2,7 @@ package com.jmart.flights_app.other.di.modules
 
 import android.annotation.SuppressLint
 import com.jmart.flights_app.BuildConfig
+import com.jmart.flights_app.data.dataSource.api.AirportApi
 import com.jmart.flights_app.other.enums.BuildFlavorEnum
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
@@ -49,5 +50,7 @@ object AppModule {
             .build()
     }
 
-
+    @Provides
+    @Singleton
+    fun airportApi(retrofit: Retrofit): AirportApi = retrofit.create(AirportApi::class.java)
 }

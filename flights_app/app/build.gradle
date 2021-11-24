@@ -4,6 +4,7 @@ plugins {
     id 'kotlin-kapt'
     id 'androidx.navigation.safeargs.kotlin'
     id 'dagger.hilt.android.plugin'
+    id 'com.google.android.libraries.mapsplatform.secrets-gradle-plugin'
 }
 
 android {
@@ -57,14 +58,14 @@ android {
     productFlavors {
         tst {
             applicationIdSuffix = ".tst"
-            buildConfigField('String', 'BASE_URL', '"https://flightassets.datasavannah.com"')
+            buildConfigField('String', 'BASE_URL', '"https://flightassets.datasavannah.com/test/"')
         }
         accp {
             applicationIdSuffix = ".accp"
-            buildConfigField('String', 'BASE_URL', '"https://flightassets.datasavannah.com/test"')
+            buildConfigField('String', 'BASE_URL', '"https://flightassets.datasavannah.com/test/"')
         }
         prod {
-            buildConfigField('String', 'BASE_URL', '"https://flightassets.datasavannah.com/test"')
+            buildConfigField('String', 'BASE_URL', '"https://flightassets.datasavannah.com/test/"')
         }
     }
 
@@ -110,6 +111,10 @@ dependencies {
     implementation 'androidx.activity:activity-compose:1.4.0'
     implementation "androidx.navigation:navigation-compose:2.4.0-beta02"
     implementation "com.jakewharton.timber:timber:4.7.1"
+    implementation 'com.google.android.libraries.maps:maps:3.1.0-beta'
+    implementation "androidx.compose.runtime:runtime:1.1.0-beta03"
+    implementation "androidx.compose.runtime:runtime-livedata:1.1.0-beta03"
+    implementation "androidx.compose.runtime:runtime-rxjava2:1.1.0-beta03"
 
     // testing
     testImplementation 'junit:junit:4.13.2'
@@ -136,6 +141,7 @@ dependencies {
     implementation "com.google.code.gson:gson:2.8.6"
 
     // DI
+    implementation 'androidx.hilt:hilt-navigation-compose:1.0.0-beta01'
     implementation "com.google.dagger:hilt-android:$daggerHiltVersion"
     kapt "com.google.dagger:hilt-android-compiler:$daggerHiltVersion"
 
@@ -144,8 +150,27 @@ dependencies {
     implementation "androidx.lifecycle:lifecycle-common-java8:2.4.0"
     implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:2.4.0"
     implementation "androidx.lifecycle:lifecycle-livedata-ktx:2.4.0"
+    implementation "androidx.compose.runtime:runtime:1.1.0-beta03"
+    implementation "androidx.compose.runtime:runtime-livedata:1.1.0-beta03"
+    implementation "androidx.compose.runtime:runtime-rxjava2:1.1.0-beta03"
     implementation "androidx.navigation:navigation-fragment-ktx:$navigationVersion"
     implementation "androidx.navigation:navigation-ui-ktx:$navigationVersion"
     implementation "androidx.navigation:navigation-runtime-ktx:$navigationVersion"
+
+    // google maps
+    implementation "com.google.android.gms:play-services-maps:18.0.0"
+    // KTX for the Maps SDK for Android V3 BETA Library
+    implementation 'com.google.maps.android:maps-v3-ktx:3.2.0'
+
+    // KTX for the Maps SDK for Android V3 BETA Utility Library
+    implementation 'com.google.maps.android:maps-utils-v3-ktx:3.2.0'
+
+    // It is recommended to also include the latest Maps SDK and/or Utility Library versions
+    // as well to ensure that you have the latest features and bug fixes.
+    implementation 'com.google.android.libraries.maps:maps:3.1.0-beta'
+    implementation 'com.google.maps.android:android-maps-utils-v3:<latest-version>'
+
+    // others
+    implementation 'io.coil-kt:coil-compose:1.4.0'
 
 }

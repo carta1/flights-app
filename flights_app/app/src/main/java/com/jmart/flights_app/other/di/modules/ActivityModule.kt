@@ -2,6 +2,7 @@ package com.jmart.flights_app.other.di.modules
 
 import android.app.Activity
 import android.view.LayoutInflater
+import androidx.activity.ComponentActivity
 import androidx.appcompat.app.AppCompatActivity
 import dagger.Module
 import dagger.Provides
@@ -14,14 +15,7 @@ object ActivityModule {
     object ActivityModule {
 
         @Provides
-        fun appCompatActivity(activity: Activity): AppCompatActivity = activity as AppCompatActivity
-
-        @Provides
-        fun layoutInflater(activity: Activity): LayoutInflater = LayoutInflater.from(activity)
-
-        @Provides
-        fun fragmentManager(activity: AppCompatActivity) = activity.supportFragmentManager
-
+        fun appComponentActivity(activity: Activity): ComponentActivity = activity as  ComponentActivity
     }
 
 }

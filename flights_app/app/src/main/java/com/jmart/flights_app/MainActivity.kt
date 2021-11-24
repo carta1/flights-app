@@ -10,27 +10,32 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.navigation.NavDestination.Companion.hierarchy
 import androidx.navigation.NavGraph.Companion.findStartDestination
+import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
-import com.jmart.flights_app.ui.pages.mapPage.MapPage
+import androidx.navigation.navArgument
 import com.jmart.flights_app.ui.pages.airportPage.AirportPage
-import com.jmart.flights_app.ui.screens.Screen
+import com.jmart.flights_app.ui.pages.airportPage.airportDetails.AirportDetailsPage
+import com.jmart.flights_app.ui.pages.mapPage.MapPage
+import com.jmart.flights_app.ui.screens.NavScreens
 import com.jmart.flights_app.ui.theme.Flights_appTheme
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class MainActivity : ComponentActivity() {
+
     @ExperimentalFoundationApi
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
         setContent {
             Flights_appTheme {
                 // A surface container using the 'background' color from the theme
                 Surface(color = MaterialTheme.colors.background) {
-                    Greeting("Android")
                     BottomNavigation()
                 }
             }
@@ -41,15 +46,14 @@ class MainActivity : ComponentActivity() {
 @ExperimentalFoundationApi
 @Composable
 fun BottomNavigation() {
-    val items = listOf(Screen.Map, Screen.Airport)
+    val items = listOf(NavScreens.Map, NavScreens.Airport)
 
     val navController = rememberNavController()
-
     Scaffold(
         topBar = {
-                 TopAppBar() {
-                     Text(text = "test")
-                 }
+            TopAppBar() {
+                Text(text = "Airports")
+            }
         },
         bottomBar = {
             BottomNavigation {
@@ -82,22 +86,25 @@ fun BottomNavigation() {
 
         }
     ) { innerPadding ->
-        NavHost(navController, startDestination = Screen.Map.route, Modifier.padding(innerPadding)) {
-            composable(Screen.Map.route) { MapPage(navController) }
-            composable(Screen.Airport.route) { AirportPage(navController) }
+        // set up navHost and bottom navigation
+        NavHost(
+            navController,
+            startDestination = NavScreens.Map.route,
+            Modifier.padding(innerPadding)
+        ) {
+            composable(NavScreens.Map.route) { MapPage(navController) }
+            composable(NavScreens.Airport.route) { AirportPage(navController) }
+            composable(
+                NavScreens.AirportDetails.route,
+                arguments = listOf(navArgument(NavScreens.AirportDetails.args) {
+                    type = NavType.StringType
+                })
+            ) { backStackEntry ->
+                AirportDetailsPage(
+                    navController,
+                    backStackEntry.arguments?.getString(NavScreens.AirportDetails.args)
+                )
+            }
         }
-    }
-}
-
-@Composable
-fun Greeting(name: String) {
-    Text(text = "Hello $name!")
-}
-
-@Preview(showBackground = true)
-@Composable
-fun DefaultPreview() {
-    Flights_appTheme {
-        Greeting("Android")
     }
 }

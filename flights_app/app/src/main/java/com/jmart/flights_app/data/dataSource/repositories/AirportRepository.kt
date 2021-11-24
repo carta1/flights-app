@@ -1,7 +1,7 @@
 package com.jmart.flights_app.data.dataSource.repositories
 
 import com.jmart.flights_app.data.dataSource.remote.RemoteAirportDataSource
-import com.jmart.flights_app.data.models.Airports
+import com.jmart.flights_app.data.models.Airport
 import com.jmart.flights_app.data.models.Flights
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
@@ -17,7 +17,7 @@ class AirportRepository(
         }
     }
 
-    suspend fun getAirports(): List<Airports>? {
+    suspend fun getAirports(): List<Airport>? {
         return withContext(ioDispatcher) {
             remoteAirportDataSource.getAirports()
         }

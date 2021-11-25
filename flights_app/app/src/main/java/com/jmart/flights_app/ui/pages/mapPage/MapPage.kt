@@ -26,6 +26,8 @@ import com.jmart.flights_app.R
 import com.jmart.flights_app.data.models.Airport
 import com.jmart.flights_app.ui.screens.NavScreens
 import kotlinx.coroutines.launch
+import java.net.URLEncoder
+import java.nio.charset.StandardCharsets
 
 private const val INITIAL_ZOOM = 5f
 private const val AMS_LAT = "52.30907"
@@ -142,9 +144,12 @@ private fun MapViewContainer(
         googleMap.addMarker { position(cameraPosition).title(AMS_AIRPORT) }
         googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(cameraPosition, INITIAL_ZOOM))
 
+        // which is clicked it will navigate to the airportDetails
         googleMap.setOnMarkerClickListener(GoogleMap.OnMarkerClickListener { marker ->
-            // which is clicked it will navigate to the storeDetails
-            val markerName: String = marker.title ?: "N/A"
+            // replaces the / for * because they are not allowed as arguments and then on the airport
+            // detail page they are added back
+            val markerName: String = marker.title.replace("/", "*")
+
             navController.navigate(NavScreens.AirportDetails.getNavigationRouteWithArgs(markerName))
             false
         })

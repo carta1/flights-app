@@ -29,8 +29,12 @@ import com.jmart.flights_app.data.models.Airport
 @Composable
 fun AirportDetailsPage(navController: NavHostController, airportName: String?) {
     val airportDetailsViewModel = hiltViewModel<AirportDetailViewModel>()
-    airportDetailsViewModel.getAirportDetails(airportName ?: "")
+
+    // replaces the * for / because they are part of the original airport name
+    airportDetailsViewModel.getAirportDetails(airportName?.replace("*", "/") ?: "")
     val mAirPortDetails by airportDetailsViewModel.airPortDetails.observeAsState()
+    val mClosestAirport by airportDetailsViewModel.closestAirport.observeAsState()
+    val mClosestAirportDistance by airportDetailsViewModel.closestAirportDistance.observeAsState()
     Box(
         modifier = Modifier
             .background(Color.White)
@@ -38,20 +42,25 @@ fun AirportDetailsPage(navController: NavHostController, airportName: String?) {
             .fillMaxWidth()
 
     ) {
-        ConstraintLayoutContent(airportName, mAirPortDetails)
+        ConstraintLayoutContent(airportName, mAirPortDetails, mClosestAirport, mClosestAirportDistance)
     }
 }
 
 @Composable
-fun ConstraintLayoutContent(name: String?, details: Airport?) {
+fun ConstraintLayoutContent(
+    name: String?,
+    details: Airport?,
+    nearestAirPort: Airport?,
+    nearestAirportDistance: String? ) {
     ConstraintLayout {
         Modifier
             .fillMaxWidth()
             .fillMaxHeight()
 
         // Create references for the composables to constrain
-        val (titleText, idHeaderText, latitudeHeaderText,
-            longitudeHeaderText, nameHeaderText, cityHeaderText, countryIdHeaderText) = createRefs()
+        val (titleText, idHeaderText, latitudeHeaderText, longitudeHeaderText, nameHeaderText,
+            cityHeaderText, countryIdHeaderText, nearestAirportHeaderText,
+            nearestAirportDistanceHeaderText) = createRefs()
 
         Text(
             text = stringResource(R.string.airport_details_title),
@@ -70,14 +79,14 @@ fun ConstraintLayoutContent(name: String?, details: Airport?) {
             top.linkTo(titleText.bottom, margin = 32.dp)
             start.linkTo(parent.start, margin = 16.dp)
         }.let {
-            customDetailTextView(stringResource(R.string.airport_details_id), "${details?.id}", it)
+            customHighlightTextView(stringResource(R.string.airport_details_id), "${details?.id}", it)
         }
 
         Modifier.constrainAs(latitudeHeaderText) {
             top.linkTo(idHeaderText.bottom, margin = 16.dp)
             start.linkTo(parent.start, margin = 16.dp)
         }.let {
-            customDetailTextView(
+            customHighlightTextView(
                 stringResource(R.string.airport_details_latitude),
                 "${details?.latitude}",
                 it
@@ -88,7 +97,7 @@ fun ConstraintLayoutContent(name: String?, details: Airport?) {
             top.linkTo(latitudeHeaderText.bottom, margin = 16.dp)
             start.linkTo(parent.start, margin = 16.dp)
         }.let {
-            customDetailTextView(
+            customHighlightTextView(
                 stringResource(R.string.airport_details_longitude),
                 "${details?.longitude}",
                 it
@@ -99,7 +108,7 @@ fun ConstraintLayoutContent(name: String?, details: Airport?) {
             top.linkTo(longitudeHeaderText.bottom, margin = 16.dp)
             start.linkTo(parent.start, margin = 16.dp)
         }.let {
-            customDetailTextView(
+            customHighlightTextView(
                 stringResource(R.string.airport_details_name),
                 "${details?.name}",
                 it
@@ -110,7 +119,7 @@ fun ConstraintLayoutContent(name: String?, details: Airport?) {
             top.linkTo(nameHeaderText.bottom, margin = 16.dp)
             start.linkTo(parent.start, margin = 16.dp)
         }.let {
-            customDetailTextView(
+            customHighlightTextView(
                 stringResource(R.string.airport_details_city),
                 "${details?.city}",
                 it
@@ -121,9 +130,31 @@ fun ConstraintLayoutContent(name: String?, details: Airport?) {
             top.linkTo(cityHeaderText.bottom, margin = 16.dp)
             start.linkTo(parent.start, margin = 16.dp)
         }.let {
-            customDetailTextView(
+            customHighlightTextView(
                 stringResource(R.string.airport_details_country_id),
                 "${details?.countryId}",
+                it
+            )
+        }
+
+        Modifier.constrainAs(nearestAirportHeaderText) {
+            top.linkTo(countryIdHeaderText.bottom, margin = 16.dp)
+            start.linkTo(parent.start, margin = 16.dp)
+        }.let {
+            customHighlightTextView(
+                stringResource(R.string.airport_details_nearest_airport),
+                "${nearestAirPort?.name}",
+                it
+            )
+        }
+
+        Modifier.constrainAs(nearestAirportDistanceHeaderText) {
+            top.linkTo(nearestAirportHeaderText.bottom, margin = 16.dp)
+            start.linkTo(parent.start, margin = 16.dp)
+        }.let {
+            customHighlightTextView(
+                stringResource(R.string.airport_details_nearest_airport_distance),
+                "$nearestAirportDistance",
                 it
             )
         }
@@ -132,7 +163,7 @@ fun ConstraintLayoutContent(name: String?, details: Airport?) {
 
 // custom component for the airport details so the same code is not repeated
 @Composable
-fun customDetailTextView(
+fun customHighlightTextView(
     HighlightText: String,
     nonHighLightText: String,
     modifier: Modifier = Modifier,

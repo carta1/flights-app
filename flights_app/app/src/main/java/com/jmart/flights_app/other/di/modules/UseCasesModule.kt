@@ -12,6 +12,7 @@ import dagger.hilt.android.scopes.ViewModelScoped
 @Module
 @InstallIn(ViewModelComponent::class)
 object UseCasesModule {
+
     @ViewModelScoped
     @Provides
     fun getAirPorts(
@@ -25,6 +26,6 @@ object UseCasesModule {
     fun getFlights(
         airportRepository: AirportRepository
     ): GetFlights {
-        return getFlights(airportRepository)
+        return GetFlights(airportRepository)
     }
 }

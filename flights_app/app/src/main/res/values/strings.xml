@@ -15,5 +15,13 @@
     <string name="airport_details_name">Name:</string>
     <string name="airport_details_city">City:</string>
     <string name="airport_details_country_id">Country Id:</string>
+    <string name="airport_details_nearest_airport">Nearest airport:</string>
+    <string name="airport_details_nearest_airport_distance">Nearest airport distance:</string>
+
+    // airports page
+    <string name="airport_page_title">Destinations from Schiphol</string>
+    <string name="airport_page_airport">Airport:</string>
+    <string name="airport_page_distance">Distance:</string>
+
 </resources>
 

@@ -10,7 +10,7 @@ plugins {
 android {
     defaultConfig {
         applicationId 'com.jmart.flights_app'
-        minSdkVersion 21
+        minSdkVersion 24
         targetSdk 31
         compileSdkVersion 31
         versionCode 1

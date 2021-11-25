@@ -1,6 +1,8 @@
 package com.jmart.flights_app.data.models
 
 
+import com.jmart.flights_app.other.extensions.toStringWithDistance
+import com.jmart.flights_app.ui.pages.airportPage.KILOMETER
 import com.squareup.moshi.Json
 
 data class Airport(
@@ -15,5 +17,8 @@ data class Airport(
     @Json(name = "city")
     val city: String = "",
     @Json(name = "countryId")
-    val countryId: String = ""
-)
+    val countryId: String = "",
+    var distanceToAms: Double = 0.0,
+){
+    val distanceToAmsAsString get () = distanceToAms.toStringWithDistance(KILOMETER)
+}

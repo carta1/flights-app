@@ -64,7 +64,10 @@ class AirportViewModel  @Inject constructor (
     }
 
     private fun convertMeterToKilometer(meter: Float): Float {
-        return (meter * 0.001).toFloat()
+        return (meter / METERS_IN_KILOMETER)
     }
 
+    private fun convertMeterToMiles(meter: Float): Float {
+        return (meter / METERS_IN_MILE).toFloat()
+    }
 }

@@ -2,6 +2,7 @@
     <string name="app_name">flights_app</string>
     <string name="bottom_nav_menu_map">Map</string>
     <string name="bottom_nav_menu_airport">Airports</string>
+    <string name="bottom_nav_menu_settings">Settings</string>
 
     // maps page
     <string name="maps_page_airports_title">Airports</string>
@@ -22,6 +23,11 @@
     <string name="airport_page_title">Destinations from Schiphol</string>
     <string name="airport_page_airport">Airport:</string>
     <string name="airport_page_distance">Distance:</string>
+
+    // settings page
+    <string name="settings_page_title">Settings</string>
+    <string name="settings_page_distance_unit_kilometer">Units in Kilometers</string>
+    <string name="settings_page_distance_unit_mile">Units in Miles</string>
 
 </resources>
 

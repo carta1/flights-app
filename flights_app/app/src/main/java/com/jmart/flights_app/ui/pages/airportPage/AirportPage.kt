@@ -12,11 +12,17 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Alignment
+import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.focus.FocusRequester
+import androidx.compose.ui.focus.FocusRequester.Companion.createRefs
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import com.jmart.flights_app.R
@@ -26,8 +32,11 @@ import com.jmart.flights_app.ui.pages.airportPage.airportDetails.customHighlight
 const val SCHIPHOL_AIRPORT_ID = "AMS"
 const val KILOMETER = "Kilometers"
 const val MILES = "Miles"
+const val METERS_IN_MILE = 1609.344
+const val METERS_IN_KILOMETER = 1000
 
 
+@ExperimentalComposeUiApi
 @ExperimentalFoundationApi
 @Composable
 fun AirportPage(navController: NavHostController) {
@@ -45,21 +54,50 @@ fun AirportPage(navController: NavHostController) {
             text = stringResource(R.string.airport_page_title),
             style = MaterialTheme.typography.h1
         )
-        AirportsLister(airports ?: listOf<Airport>())
+        constraintLayoutContent(airports ?: listOf<Airport>())
+
+    }
+}
+
+@ExperimentalComposeUiApi
+@Composable
+fun constraintLayoutContent(airports: List<Airport>) {
+    ConstraintLayout {
+        Modifier
+            .fillMaxWidth()
+            .fillMaxHeight()
+        // Create references for the composables to constrain
+        val (titleText, airportLister) = createRefs()
+
+        Text(
+            text = stringResource(R.string.airport_page_title),
+            style = MaterialTheme.typography.h5,
+            color = Color.Black,
+            fontWeight = FontWeight.Bold,
+            textAlign = TextAlign.Center,
+            modifier = Modifier.constrainAs(titleText) {
+                start.linkTo(parent.start, margin = 16.dp)
+                top.linkTo(parent.top, margin = 16.dp)
+                end.linkTo(parent.end, margin = 16.dp)
+            }
+        )
+        Modifier.constrainAs(airportLister) {
+            top.linkTo(titleText.bottom, margin = 32.dp)
+            start.linkTo(parent.start, margin = 16.dp)
+            end.linkTo(parent.end, margin = 16.dp)
+        }.let {
+            AirportsLister(airports, it)
+        }
     }
 }
 
 @Composable
 fun AirportsLister(
     airports: List<Airport>,
+    modifier: Modifier
 ) {
     LazyColumn(
-        Modifier
-            .fillMaxWidth()
-            .wrapContentSize(
-                Alignment.TopStart
-            )
-
+        modifier = modifier
     )
     {
         items(airports) {

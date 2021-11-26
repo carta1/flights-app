@@ -5,6 +5,7 @@ import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.core.edit
 import androidx.datastore.preferences.core.emptyPreferences
+import androidx.datastore.preferences.core.stringPreferencesKey
 import androidx.datastore.preferences.preferencesDataStore
 import com.jmart.flights_app.data.dataSource.storageHandler.PreferenceStorageHandler
 import dagger.hilt.android.qualifiers.ApplicationContext
@@ -22,15 +23,20 @@ class AppPrefsStorage @Inject constructor(
     @ApplicationContext val context: Context
 ) : PreferenceStorageHandler {
 
-    val Context.dataStore: DataStore<Preferences> by preferencesDataStore(
+    private val Context.dataStore: DataStore<Preferences> by preferencesDataStore(
         name = USER_PREFERENCES_NAME
     )
 
     private object PreferencesKeys {
-        //todo add keys when needed
+        val DISTANCE_UNIT = stringPreferencesKey("distance_unit")
     }
 
+    override suspend fun setUserDistanceUnit(distanceUnit: String) {
+        context.dataStore.setValue(PreferencesKeys.DISTANCE_UNIT, distanceUnit)
     }
+
+    override val getUserDistanceUnit: Flow<String>
+        get() = context.dataStore.getValueAsFlow(PreferencesKeys.DISTANCE_UNIT, "")
 
     /***
      * handy function to save key-value pairs in Preference. Sets or updates the value in Preference
@@ -71,3 +77,4 @@ class AppPrefsStorage @Inject constructor(
             preferences[key] ?: defaultValue
         }
     }
+}

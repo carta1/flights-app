@@ -1,22 +1,29 @@
 package com.jmart.flights_app.ui.pages.airportPage.airportDetails
 
 import android.location.Location
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
+import androidx.lifecycle.*
 import com.jmart.flights_app.data.models.Airport
 import com.jmart.flights_app.data.useCases.GetAirPorts
+import com.jmart.flights_app.data.useCases.GetUserDistanceUnit
+import com.jmart.flights_app.data.useCases.SetUserDistanceUnit
 import com.jmart.flights_app.ui.pages.airportPage.KILOMETER
+import com.jmart.flights_app.ui.pages.airportPage.METERS_IN_KILOMETER
+import com.jmart.flights_app.ui.pages.airportPage.METERS_IN_MILE
+import com.jmart.flights_app.ui.pages.airportPage.MILES
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.launch
+import timber.log.Timber
 import java.util.*
 import javax.inject.Inject
+import kotlin.contracts.Returns
 
 @HiltViewModel
 class AirportDetailViewModel @Inject constructor (
     private val getAirports: GetAirPorts,
-): ViewModel() {
+    private val getUserDistanceUnit: GetUserDistanceUnit
+    ): ViewModel() {
 
     private val _isLoading = MutableLiveData(false)
     val isLoading: LiveData<Boolean> = _isLoading
@@ -47,7 +54,12 @@ class AirportDetailViewModel @Inject constructor (
                 longitude = details?.longitude?: 0.0
             }
 
-            getClosestAirport(loc, result?.filter { it.name != airportName} )
+            getUserDistanceUnit.invoke().collect { unit ->
+                getClosestAirport(loc, result?.filter { it.name != airportName}, unit)
+            }
+
+
+
         }
     }
 
@@ -56,7 +68,7 @@ class AirportDetailViewModel @Inject constructor (
         return airPortList?.find { airport -> airport.toString().contains(airportName) }
     }
 
-    private fun getClosestAirport(currentAirPortLocation: Location, airportList: List<Airport>?){
+    private fun getClosestAirport(currentAirPortLocation: Location, airportList: List<Airport>?, userUnits: String?){
         val distanceInMetersList = mutableListOf<Float>()
 
         if (airportList != null) {
@@ -71,18 +83,36 @@ class AirportDetailViewModel @Inject constructor (
 
         val closestAirportIndex = distanceInMetersList.indexOf(Collections.min(distanceInMetersList))
         val closestAirport = airportList?.get(closestAirportIndex)
-        val closestAirportDistance = convertMeterToKilometer(distanceInMetersList[closestAirportIndex]).toDouble()
+        val closestAirportDistance = getUserDistanceUnit(distanceInMetersList[closestAirportIndex], userUnits)
 
         _closestAirport.postValue(closestAirport)
 
-        // post the distance value to the live data and converts it to a string to show two decimal places
-        // and round automatically
-        val distanceAsString = String.format("%.2f", closestAirportDistance)
-        _closestAirportDistance.postValue("$distanceAsString $KILOMETER")
+
+
+        _closestAirportDistance.postValue(closestAirportDistance)
     }
 
-    private fun convertMeterToKilometer(meter: Float): Float {
-        return (meter * 0.001).toFloat()
+    private fun convertMeterToKilometer(meter: Float): String {
+        // converts it to a string to show two decimal places
+        // and round automatically
+        val distanceInKilometers = (meter / METERS_IN_KILOMETER).toDouble()
+        val distanceAsString = String.format("%.2f", distanceInKilometers)
+        return "$distanceAsString $KILOMETER"
+
+    }
+
+    private fun convertMeterToMiles(meter: Float): String {
+        val distanceInMiles = (meter / METERS_IN_MILE)
+        val distanceAsString = String.format("%.2f", distanceInMiles)
+        return "$distanceAsString $MILES"
+    }
+
+    private fun getUserDistanceUnit(meter: Float, userUnits: String?): String {
+        return if (userUnits == MILES) {
+            convertMeterToMiles(meter)
+        } else {
+            convertMeterToKilometer(meter)
+        }
     }
 
 }

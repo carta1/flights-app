@@ -10,9 +10,11 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Menu
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.navigation.NavDestination.Companion.hierarchy
 import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavType
@@ -24,6 +26,7 @@ import androidx.navigation.navArgument
 import com.jmart.flights_app.ui.pages.airportPage.AirportPage
 import com.jmart.flights_app.ui.pages.airportPage.airportDetails.AirportDetailsPage
 import com.jmart.flights_app.ui.pages.mapPage.MapPage
+import com.jmart.flights_app.ui.pages.settings.SettingsPage
 import com.jmart.flights_app.ui.screens.NavScreens
 import com.jmart.flights_app.ui.theme.Flights_appTheme
 import dagger.hilt.android.AndroidEntryPoint
@@ -31,6 +34,7 @@ import dagger.hilt.android.AndroidEntryPoint
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
 
+    @ExperimentalComposeUiApi
     @ExperimentalFoundationApi
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -46,10 +50,12 @@ class MainActivity : ComponentActivity() {
     }
 }
 
+
+@ExperimentalComposeUiApi
 @ExperimentalFoundationApi
 @Composable
 fun BottomNavigation() {
-    val items = listOf(NavScreens.Map, NavScreens.Airport)
+    val items = listOf(NavScreens.Map, NavScreens.Settings)
 
     val navController = rememberNavController()
     Scaffold(
@@ -107,6 +113,7 @@ fun BottomNavigation() {
         ) {
             composable(NavScreens.Map.route) { MapPage(navController) }
             composable(NavScreens.Airport.route) { AirportPage(navController) }
+            composable(NavScreens.Settings.route) { SettingsPage(navController) }
             composable(
                 NavScreens.AirportDetails.route,
                 arguments = listOf(navArgument(NavScreens.AirportDetails.args) {

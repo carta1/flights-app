@@ -16,6 +16,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
@@ -63,42 +64,43 @@ fun constraintLayoutContent(viewModel: SettingViewModel, distanceUnit: String?) 
         // Create references for the composables to constrain
         val (titleText, kilometerText, kilometersCheckbox, milesText, milesCheckbox) = createRefs()
 
-        Text(
-            text = stringResource(R.string.settings_page_title),
-            style = MaterialTheme.typography.h5,
-            color = Color.Black,
-            fontWeight = FontWeight.Bold,
-            textAlign = TextAlign.Center,
-            modifier = Modifier.constrainAs(titleText) {
-                start.linkTo(parent.start, margin = 16.dp)
-                top.linkTo(parent.top, margin = 16.dp)
-                end.linkTo(parent.end, margin = 16.dp)
-            }
-        )
+        Modifier.constrainAs(titleText) {
+            start.linkTo(parent.start, margin = 16.dp)
+            top.linkTo(parent.top, margin = 16.dp)
+            end.linkTo(parent.end, margin = 16.dp)
+        }.let {
+            normalTextView(
+                stringResource(R.string.settings_page_title),
+                Color.Black,
+                FontWeight.Bold,
+                it,
+                MaterialTheme.typography.h5
+            )
+        }
 
-        Text(
-            text = stringResource(R.string.settings_page_distance_unit_kilometer),
-            style = MaterialTheme.typography.body1,
-            color = Color.Black,
-            fontWeight = FontWeight.Bold,
-            textAlign = TextAlign.Center,
-            modifier = Modifier.constrainAs(kilometerText) {
-                start.linkTo(parent.start, margin = 16.dp)
-                top.linkTo(titleText.bottom, margin = 16.dp)
-            }
-        )
+        Modifier.constrainAs(kilometerText) {
+            start.linkTo(parent.start, margin = 16.dp)
+            top.linkTo(titleText.bottom, margin = 16.dp)
+        }.let {
+            normalTextView(
+                stringResource(R.string.settings_page_distance_unit_kilometer),
+                Color.Black,
+                FontWeight.Bold,
+                it
+            )
+        }
 
-        Text(
-            text = stringResource(R.string.settings_page_distance_unit_mile),
-            style = MaterialTheme.typography.body1,
-            color = Color.Black,
-            fontWeight = FontWeight.Bold,
-            textAlign = TextAlign.Center,
-            modifier = Modifier.constrainAs(milesText) {
-                start.linkTo(parent.start, margin = 16.dp)
-                top.linkTo(kilometerText.bottom, margin = 16.dp)
-            }
-        )
+        Modifier.constrainAs(milesText) {
+            start.linkTo(parent.start, margin = 16.dp)
+            top.linkTo(kilometerText.bottom, margin = 16.dp)
+        }.let {
+            normalTextView(
+                stringResource(R.string.settings_page_distance_unit_mile),
+                Color.Black,
+                FontWeight.Bold,
+                it
+            )
+        }
 
         Checkbox(
             checked = isKilometerChecked.value,
@@ -116,7 +118,8 @@ fun constraintLayoutContent(viewModel: SettingViewModel, distanceUnit: String?) 
             ),
             modifier = Modifier.constrainAs(kilometersCheckbox) {
                 start.linkTo(kilometerText.end, margin = 16.dp)
-                top.linkTo(titleText.bottom, margin = 16.dp)
+                top.linkTo(kilometerText.top, margin = 0.dp)
+                bottom.linkTo(kilometerText.bottom, margin = 0.dp)
             }
         )
 
@@ -138,7 +141,23 @@ fun constraintLayoutContent(viewModel: SettingViewModel, distanceUnit: String?) 
             modifier = Modifier.constrainAs(milesCheckbox) {
                 start.linkTo(kilometerText.end, margin = 16.dp)
                 top.linkTo(kilometersCheckbox.bottom, margin = 16.dp)
+                bottom.linkTo(milesText.bottom, margin = 0.dp)
             }
         )
     }
+}
+
+@Composable
+fun normalTextView(
+    text: String, color: Color, fontWeight: FontWeight, modifier: Modifier,
+    textStyle: TextStyle = MaterialTheme.typography.body2
+) {
+    Text(
+        text = text,
+        style = textStyle,
+        color = color,
+        fontWeight = fontWeight,
+        textAlign = TextAlign.Center,
+        modifier = modifier
+    )
 }

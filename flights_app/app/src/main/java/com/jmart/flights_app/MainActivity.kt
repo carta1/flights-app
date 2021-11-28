@@ -55,7 +55,7 @@ class MainActivity : ComponentActivity() {
 @ExperimentalFoundationApi
 @Composable
 fun BottomNavigation() {
-    val items = listOf(NavScreens.Map, NavScreens.Settings)
+    val items = listOf(NavScreens.Map, NavScreens.Airport, NavScreens.Settings)
 
     val navController = rememberNavController()
     Scaffold(

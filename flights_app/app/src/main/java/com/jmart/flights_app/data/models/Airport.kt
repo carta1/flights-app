@@ -19,6 +19,5 @@ data class Airport(
     @Json(name = "countryId")
     val countryId: String = "",
     var distanceToAms: Double = 0.0,
-){
-    val distanceToAmsAsString get () = distanceToAms.toStringWithDistance(KILOMETER)
-}
+    var distanceToAmsAsString: String = ""
+)

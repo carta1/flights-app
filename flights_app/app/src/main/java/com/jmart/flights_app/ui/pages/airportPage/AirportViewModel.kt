@@ -9,7 +9,10 @@ import com.jmart.flights_app.data.models.Airport
 import com.jmart.flights_app.data.models.Flight
 import com.jmart.flights_app.data.useCases.GetAirPorts
 import com.jmart.flights_app.data.useCases.GetFlights
+import com.jmart.flights_app.data.useCases.GetUserDistanceUnit
+import com.jmart.flights_app.other.utils.DistanceUtils
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 import timber.log.Timber
 import javax.inject.Inject
@@ -18,6 +21,7 @@ import javax.inject.Inject
 class AirportViewModel  @Inject constructor (
     private val getAirports: GetAirPorts,
     private val getFlights: GetFlights,
+    private val getUserDistanceUnit: GetUserDistanceUnit
 ): ViewModel() {
 
     private val _airPorts = MutableLiveData<List<Airport>?>()
@@ -28,11 +32,13 @@ class AirportViewModel  @Inject constructor (
             val airportsResult = getAirports.invoke()
             val flightsResult = getFlights.invoke()
 
-            getClosestAirport(airportsResult, flightsResult )
+            getUserDistanceUnit.invoke().collect { unit ->
+                getClosestAirport(airportsResult, flightsResult, unit)
+            }
         }
     }
 
-    private fun getClosestAirport(airportList: List<Airport>?, flightList: List<Flight>?){
+    private fun getClosestAirport(airportList: List<Airport>?, flightList: List<Flight>?, userUnit: String){
         val schipholDetails = airportList?.firstOrNull { it.id == SCHIPHOL_AIRPORT_ID }
         val schipholLocation: Location = Location("").apply{
             latitude = schipholDetails?.latitude?: 0.0
@@ -57,6 +63,7 @@ class AirportViewModel  @Inject constructor (
                     longitude = location.longitude
                 }
                 location.distanceToAms = convertMeterToKilometer(schipholLocation.distanceTo(loc)).toDouble()
+                location.distanceToAmsAsString = DistanceUtils.getUserDistanceUnit(schipholLocation.distanceTo(loc), userUnit)
             }
         }
         val sortedAirportsList = airportList?.sortedBy { it.distanceToAms }

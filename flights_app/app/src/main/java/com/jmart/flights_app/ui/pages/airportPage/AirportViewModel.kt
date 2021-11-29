@@ -1,10 +1,14 @@
 package com.jmart.flights_app.ui.pages.airportPage
 
+import android.content.Context
 import android.location.Location
+import androidx.compose.runtime.Composable
+import androidx.compose.ui.platform.LocalContext
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.jmart.flights_app.R
 import com.jmart.flights_app.data.models.Airport
 import com.jmart.flights_app.data.models.Flight
 import com.jmart.flights_app.data.useCases.GetAirPorts
@@ -14,7 +18,6 @@ import com.jmart.flights_app.other.utils.DistanceUtils
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
-import timber.log.Timber
 import javax.inject.Inject
 
 @HiltViewModel
@@ -23,9 +26,9 @@ class AirportViewModel  @Inject constructor (
     private val getFlights: GetFlights,
     private val getUserDistanceUnit: GetUserDistanceUnit
 ): ViewModel() {
-
     private val _airPorts = MutableLiveData<List<Airport>?>()
     val airPorts: LiveData<List<Airport>?> = _airPorts
+
 
     fun getAllAirports() {
         viewModelScope.launch{
@@ -62,19 +65,11 @@ class AirportViewModel  @Inject constructor (
                     latitude = location.latitude
                     longitude = location.longitude
                 }
-                location.distanceToAms = convertMeterToKilometer(schipholLocation.distanceTo(loc)).toDouble()
+                location.distanceToAms = DistanceUtils.convertFloatToDoubleInKm(schipholLocation.distanceTo(loc))
                 location.distanceToAmsAsString = DistanceUtils.getUserDistanceUnit(schipholLocation.distanceTo(loc), userUnit)
             }
         }
         val sortedAirportsList = airportList?.sortedBy { it.distanceToAms }
         _airPorts.postValue(sortedAirportsList?.filter { it.distanceToAms != 0.0})
-    }
-
-    private fun convertMeterToKilometer(meter: Float): Float {
-        return (meter / METERS_IN_KILOMETER)
-    }
-
-    private fun convertMeterToMiles(meter: Float): Float {
-        return (meter / METERS_IN_MILE).toFloat()
     }
 }

@@ -84,9 +84,6 @@ class AirportDetailViewModel @Inject constructor (
         val closestAirportDistance = DistanceUtils.getUserDistanceUnit(distanceInMetersList[closestAirportIndex], userUnits)
 
         _closestAirport.postValue(closestAirport)
-
-
-
         _closestAirportDistance.postValue(closestAirportDistance)
     }
 

@@ -17,6 +17,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.FocusRequester.Companion.createRefs
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
@@ -30,8 +31,8 @@ import com.jmart.flights_app.data.models.Airport
 import com.jmart.flights_app.ui.pages.airportPage.airportDetails.customHighlightTextView
 
 const val SCHIPHOL_AIRPORT_ID = "AMS"
-const val KILOMETER = "Kilometers"
-const val MILES = "Miles"
+const val KILOMETER = "km"
+const val MILES = "mi"
 const val METERS_IN_MILE = 1609.344
 const val METERS_IN_KILOMETER = 1000
 
@@ -41,7 +42,6 @@ const val METERS_IN_KILOMETER = 1000
 @Composable
 fun AirportPage(navController: NavHostController) {
     val airportViewModel = hiltViewModel<AirportViewModel>()
-
     airportViewModel.getAllAirports()
     val airports by airportViewModel.airPorts.observeAsState()
 

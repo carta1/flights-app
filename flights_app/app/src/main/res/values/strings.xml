@@ -20,7 +20,7 @@
     <string name="airport_details_nearest_airport_distance">Nearest airport distance:</string>
 
     // airports page
-    <string name="airport_page_title">Destinations from Schiphol</string>
+    <string name="airport_page_title">Departures from Schiphol to:</string>
     <string name="airport_page_airport">Airport:</string>
     <string name="airport_page_distance">Distance:</string>
 
@@ -29,5 +29,8 @@
     <string name="settings_page_distance_unit_kilometer">Units in Kilometers</string>
     <string name="settings_page_distance_unit_mile">Units in Miles</string>
 
-</resources>
+    // units of distance
+    <string name="distance_unit_kilometers">%1$s Kilometers</string>
+    <string name="distance_unit_miles">%1$s Miles</string>
 
+</resources>

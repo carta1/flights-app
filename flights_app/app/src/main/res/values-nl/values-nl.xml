@@ -1,0 +1,36 @@
+<resources>
+    <string name="app_name">flights_app</string>
+    <string name="bottom_nav_menu_map">Kaart</string>
+    <string name="bottom_nav_menu_airport">Luchthavens</string>
+    <string name="bottom_nav_menu_settings">Instellingen</string>
+
+    // maps page
+    <string name="maps_page_airports_title">Luchthavens</string>
+    <string name="maps_api_key">AIzaSyBpgP8PaTYP1fEcFC-igdwjxkXJQSBa1PM</string>
+
+    // airport details page
+    <string name="airport_details_title">Luchthaven details</string>
+    <string name="airport_details_id">Id:</string>
+    <string name="airport_details_latitude">Breedtegraad:</string>
+    <string name="airport_details_longitude">Lengtegraad:</string>
+    <string name="airport_details_name">Naam:</string>
+    <string name="airport_details_city">Stad:</string>
+    <string name="airport_details_country_id">Land Id:</string>
+    <string name="airport_details_nearest_airport">Dichtstbijzijnde luchthaven:</string>
+    <string name="airport_details_nearest_airport_distance">Dichtstbijzijnde luchthaven afstand</string>
+
+    // airports page
+    <string name="airport_page_title">Vertrek vanaf Schiphol naar:</string>
+    <string name="airport_page_airport">Luchthaven:</string>
+    <string name="airport_page_distance">Afstand:</string>
+
+    // settings page
+    <string name="settings_page_title">Instellingen</string>
+    <string name="settings_page_distance_unit_kilometer">Eenheden in Kilometers</string>
+    <string name="settings_page_distance_unit_mile">Eenheden in Mijlen</string>
+
+    // units of distance
+    <string name="distance_unit_kilometers">%1$s Kilometers</string>
+    <string name="distance_unit_miles">%1$s Mijlen</string>
+
+</resources>

@@ -23,12 +23,16 @@ sealed class NavScreens(
         R.string.bottom_nav_menu_map,
         Icons.Default.LocationOn,
         NavArgs.MAP.name
-    )
+    ){
+        fun getNavigationRouteWithArgs(airportName: String): String {
+            return "${NavRoutes.AIRPORT_DETAILS.name}/$airportName"
+        }
+    }
 
     object Airport : NavScreens(
         NavRoutes.AIRPORT.name,
         R.string.bottom_nav_menu_airport,
-        Icons.Default.ThumbUp,
+        Icons.Default.LocationOn,
         NavArgs.AIRPORT.name
     )
 

@@ -85,11 +85,9 @@ class AirportDetailViewModel @Inject constructor(
             }
         }
 
-        val closestAirportIndex =
-            distanceInMetersList.indexOf(Collections.min(distanceInMetersList))
+        val closestAirportIndex = distanceInMetersList.indexOf(Collections.min(distanceInMetersList))
         val closestAirport = airportList?.get(closestAirportIndex)
-        val closestAirportDistance =
-            DistanceUtils.getUserDistanceUnit(distanceInMetersList[closestAirportIndex], userUnits)
+        val closestAirportDistance = DistanceUtils.getUserDistanceUnit(distanceInMetersList[closestAirportIndex], userUnits)
 
         _closestAirport.postValue(closestAirport)
         _closestAirportDistance.postValue(closestAirportDistance)

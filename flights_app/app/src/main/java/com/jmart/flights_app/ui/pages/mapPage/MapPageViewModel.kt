@@ -27,8 +27,9 @@ class MapPageViewModel @Inject constructor(
     fun getAllAirports() {
         viewModelScope.launch {
             val result = getAirports.invoke()
-            _airPorts.postValue(result)
             getFurthestAirportsFromEachOtherOther(result)
+            _airPorts.postValue(result)
+
         }
     }
 

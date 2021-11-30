@@ -1,30 +1,26 @@
 package com.jmart.flights_app.ui.pages.airportPage.airportDetails
 
 import android.location.Location
-import androidx.lifecycle.*
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.jmart.flights_app.data.models.Airport
 import com.jmart.flights_app.data.useCases.GetAirPorts
 import com.jmart.flights_app.data.useCases.GetUserDistanceUnit
-import com.jmart.flights_app.data.useCases.SetUserDistanceUnit
 import com.jmart.flights_app.other.utils.DistanceUtils
-import com.jmart.flights_app.ui.pages.airportPage.KILOMETER
-import com.jmart.flights_app.ui.pages.airportPage.METERS_IN_KILOMETER
-import com.jmart.flights_app.ui.pages.airportPage.METERS_IN_MILE
-import com.jmart.flights_app.ui.pages.airportPage.MILES
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.collect
-import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.launch
 import timber.log.Timber
 import java.util.*
 import javax.inject.Inject
-import kotlin.contracts.Returns
 
 @HiltViewModel
-class AirportDetailViewModel @Inject constructor (
+class AirportDetailViewModel @Inject constructor(
     private val getAirports: GetAirPorts,
     private val getUserDistanceUnit: GetUserDistanceUnit
-    ): ViewModel() {
+) : ViewModel() {
 
     private val _isLoading = MutableLiveData(false)
     val isLoading: LiveData<Boolean> = _isLoading
@@ -42,36 +38,46 @@ class AirportDetailViewModel @Inject constructor (
     val closestAirportDistance: LiveData<String> = _closestAirportDistance
 
     fun getAirportDetails(airportName: String) {
-        viewModelScope.launch{
+        viewModelScope.launch {
+            _isLoading.postValue(true)
+
             val result = getAirports.invoke()
-            _airPorts.postValue(result)
+            if (!result.isNullOrEmpty()) {
+                _airPorts.postValue(result)
+            }
+
 
             val details = getAirportInfo(airportName, result)
             _airPortDetails.postValue(details)
 
             // convert the airports coordinates to a Location class to facilitate calculations
-            val loc = Location("location").apply{
-                latitude = details?.latitude?: 0.00
-                longitude = details?.longitude?: 0.0
+            val loc = Location("location").apply {
+                latitude = details?.latitude ?: 0.00
+                longitude = details?.longitude ?: 0.0
             }
 
             getUserDistanceUnit.invoke().collect { unit ->
-                getClosestAirport(loc, result?.filter { it.name != airportName}, unit)
+                getClosestAirport(loc, result?.filter { it.name != airportName }, unit)
             }
+            _isLoading.postValue(false)
         }
     }
 
     // filters the current airport from the list of airports
-    private fun getAirportInfo(airportName: String, airPortList: List<Airport>?): Airport? {
+    fun getAirportInfo(airportName: String, airPortList: List<Airport>?): Airport? {
         return airPortList?.find { airport -> airport.toString().contains(airportName) }
     }
 
-    private fun getClosestAirport(currentAirPortLocation: Location, airportList: List<Airport>?, userUnits: String?){
+    fun getClosestAirport(
+        currentAirPortLocation: Location,
+        airportList: List<Airport>?,
+        userUnits: String?
+    ) {
         val distanceInMetersList = mutableListOf<Float>()
 
         if (airportList != null) {
             for (location in airportList) {
-                val loc = Location("").apply{
+                val loc = Location("").apply {
                     latitude = location.latitude
                     longitude = location.longitude
                 }
@@ -79,9 +85,11 @@ class AirportDetailViewModel @Inject constructor (
             }
         }
 
-        val closestAirportIndex = distanceInMetersList.indexOf(Collections.min(distanceInMetersList))
+        val closestAirportIndex =
+            distanceInMetersList.indexOf(Collections.min(distanceInMetersList))
         val closestAirport = airportList?.get(closestAirportIndex)
-        val closestAirportDistance = DistanceUtils.getUserDistanceUnit(distanceInMetersList[closestAirportIndex], userUnits)
+        val closestAirportDistance =
+            DistanceUtils.getUserDistanceUnit(distanceInMetersList[closestAirportIndex], userUnits)
 
         _closestAirport.postValue(closestAirport)
         _closestAirportDistance.postValue(closestAirportDistance)

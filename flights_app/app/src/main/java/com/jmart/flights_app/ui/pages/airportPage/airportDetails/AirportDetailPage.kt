@@ -2,16 +2,21 @@ package com.jmart.flights_app.ui.pages.airportPage.airportDetails
 
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.fillMaxHeight
-import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.Button
+import androidx.compose.material.CircularProgressIndicator
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.Color.Companion.White
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.buildAnnotatedString
@@ -19,11 +24,14 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.window.Dialog
+import androidx.compose.ui.window.DialogProperties
 import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import com.jmart.flights_app.R
 import com.jmart.flights_app.data.models.Airport
+import timber.log.Timber
 
 @ExperimentalFoundationApi
 @Composable
@@ -35,6 +43,7 @@ fun AirportDetailsPage(navController: NavHostController, airportName: String?) {
     val mAirPortDetails by airportDetailsViewModel.airPortDetails.observeAsState()
     val mClosestAirport by airportDetailsViewModel.closestAirport.observeAsState()
     val mClosestAirportDistance by airportDetailsViewModel.closestAirportDistance.observeAsState()
+    val isLoading by airportDetailsViewModel.isLoading.observeAsState()
     Box(
         modifier = Modifier
             .background(Color.White)
@@ -42,6 +51,9 @@ fun AirportDetailsPage(navController: NavHostController, airportName: String?) {
             .fillMaxWidth()
 
     ) {
+
+        Timber.e("tets is loading: ${isLoading}")
+        isLoading?.let { DummyProgress(it) }
         ConstraintLayoutContent(airportName, mAirPortDetails, mClosestAirport, mClosestAirportDistance)
     }
 }
@@ -184,4 +196,15 @@ fun customHighlightTextView(
         modifier = modifier
     )
 
+}
+
+@Composable
+fun DummyProgress(isLoading: Boolean) {
+    if (isLoading) {
+        CircularProgressIndicator()
+    } else {
+        Box() {
+
+        }
+    }
 }

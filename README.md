@@ -17,7 +17,7 @@ This application is a basic airline app that shows all the airports in the world
 - The app uses MVVM with SOLID architecture principles without a core module
 
 # Major libraries and components used
-- Google maps api, api key should be put inside the gradle.properties by adding this variable: GOOGLE_MAPS_API_KEY="AIzaSyBpgP8PaTYP1fEcFC-igdwjxkXJQSBa1PM"
+- Google maps api, api key should be put inside the gradle.properties by adding this variable: GOOGLE_MAPS_API_KEY="ADD-YOU-API-KEY"
 this is done to keep the unique api key secure
 - JetPack compose, new UI set of libraries for Android. No XML was used in this project
 - Retrofit, OKHttp, moshi, and gson for webcalls and management of the json

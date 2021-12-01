@@ -1,5 +1,5 @@
 # Flights app
-Check Master branch for code
+Check master branch for code
 
 This application is a basic airline app that shows all the airports in the world that airlines can travel to directly from Schiphol and more.
 

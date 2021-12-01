@@ -46,7 +46,7 @@ class AirportViewModel @Inject constructor(
         flightList: List<Flight>?,
         userUnit: String
     ) {
-        // get's Schiphols details from the airport list
+        // gets Schiphols details from the airport list
         val schipholDetails = airportList?.firstOrNull { it.id == SCHIPHOL_AIRPORT_ID }
 
         // Make a Location variable from the schipols location details

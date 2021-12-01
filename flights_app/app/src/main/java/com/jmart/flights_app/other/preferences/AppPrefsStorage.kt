@@ -16,6 +16,11 @@ import java.io.IOException
 import javax.inject.Inject
 import javax.inject.Singleton
 
+/** this class handles the data storage which is the new way android handles the preferences
+ * The DataStorage are handle with coroutines and the values are returned as flows because is a more
+ * efficient way to handle this type of data
+ */
+
 private const val USER_PREFERENCES_NAME = "user_preferences"
 
 @Singleton

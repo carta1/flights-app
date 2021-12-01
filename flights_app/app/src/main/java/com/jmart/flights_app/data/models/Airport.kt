@@ -1,8 +1,6 @@
 package com.jmart.flights_app.data.models
 
 
-import com.jmart.flights_app.other.extensions.toStringWithDistance
-import com.jmart.flights_app.ui.pages.airportPage.KILOMETER
 import com.squareup.moshi.Json
 
 data class Airport(

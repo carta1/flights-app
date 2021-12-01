@@ -1,7 +1,5 @@
 package com.jmart.flights_app.data.models
 
-import com.squareup.moshi.Json
-
 data class AirportToAirportDistances(
     val id: String = "",
     val latitude: Double = 0.0,

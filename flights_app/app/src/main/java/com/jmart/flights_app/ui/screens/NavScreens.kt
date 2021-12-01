@@ -5,13 +5,12 @@ import androidx.annotation.StringRes
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.AccountBox
 import androidx.compose.material.icons.filled.LocationOn
-import androidx.compose.material.icons.filled.ThumbUp
 import androidx.compose.ui.graphics.vector.ImageVector
 import com.jmart.flights_app.R
 
 /** This is a seal class that manages the nav routes, nav args, and also the bottom nav components,
-   it creates singletons so they are only created once for efficiency
-*/
+it creates singletons so they are only created once for efficiency
+ */
 sealed class NavScreens(
     var route: String,
     @StringRes val resourceId: Int,
@@ -23,7 +22,7 @@ sealed class NavScreens(
         R.string.bottom_nav_menu_map,
         Icons.Default.LocationOn,
         NavArgs.MAP.name
-    ){
+    ) {
         fun getNavigationRouteWithArgs(airportName: String): String {
             return "${NavRoutes.AIRPORT_DETAILS.name}/$airportName"
         }

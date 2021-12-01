@@ -23,3 +23,8 @@ this is done to keep the unique api key secure
 - Hilt for dependency injection 
 - Mockito, Junit, and Robolectric for unit test
 - Jetpack DataStore for the app preferences (new way for Android to store preferences
+
+![Screenshot_20211201-165947](https://user-images.githubusercontent.com/20260943/144272048-bb66cbad-0b82-43aa-b383-3b9819f87614.png)
+![Screenshot_20211201-170017](https://user-images.githubusercontent.com/20260943/144272101-13a0bdc5-8f18-40a2-a5b6-5aa0dce525b2.png)
+![Screenshot_20211201-165956](https://user-images.githubusercontent.com/20260943/144272122-83b79421-95b8-4c4c-9863-e0ad591c4b5a.png)
+![Screenshot_20211201-170026](https://user-images.githubusercontent.com/20260943/144272134-b9042ab0-1745-4597-9a16-d410b9dcf654.png)

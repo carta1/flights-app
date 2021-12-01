@@ -21,9 +21,6 @@ class AirportDetailViewModel @Inject constructor(
     private val getUserDistanceUnit: GetUserDistanceUnit
 ) : ViewModel() {
 
-    private val _isLoading = MutableLiveData(false)
-    val isLoading: LiveData<Boolean> = _isLoading
-
     private val _airPortDetails = MutableLiveData<Airport?>()
     val airPortDetails: LiveData<Airport?> = _airPortDetails
 
@@ -38,8 +35,6 @@ class AirportDetailViewModel @Inject constructor(
 
     fun getAirportDetails(airportName: String) {
         viewModelScope.launch {
-            _isLoading.postValue(true)
-
             val result = getAirports.invoke()
             if (!result.isNullOrEmpty()) {
                 _airPorts.value = result
@@ -58,7 +53,6 @@ class AirportDetailViewModel @Inject constructor(
             getUserDistanceUnit.invoke().collect { unit ->
                 getClosestAirport(loc, result?.filter { it.name != airportName }, unit)
             }
-            _isLoading.postValue(false)
         }
     }
 

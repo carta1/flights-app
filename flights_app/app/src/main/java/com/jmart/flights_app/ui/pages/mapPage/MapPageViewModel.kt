@@ -18,9 +18,6 @@ class MapPageViewModel @Inject constructor(
     private val getAirports: GetAirPorts,
 ) : ViewModel() {
 
-    private val _isLoading = MutableLiveData(false)
-    val isLoading: LiveData<Boolean> = _isLoading
-
     private val _airPorts = MutableLiveData<List<Airport>?>()
     val airPorts: LiveData<List<Airport>?> = _airPorts
 

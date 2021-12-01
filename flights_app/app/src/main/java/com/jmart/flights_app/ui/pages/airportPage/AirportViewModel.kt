@@ -30,7 +30,6 @@ class AirportViewModel @Inject constructor(
         getAllAirports()
     }
 
-
     private fun getAllAirports() {
         viewModelScope.launch {
             val airportsResult = getAirports.invoke()

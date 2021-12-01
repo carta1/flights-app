@@ -2,12 +2,17 @@ package com.jmart.flights_app.ui.pages.airportPage.airportDetails
 
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
 import androidx.compose.material.CircularProgressIndicator
+import androidx.compose.material.Icon
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -24,11 +29,10 @@ import androidx.navigation.NavHostController
 import com.jmart.flights_app.R
 import com.jmart.flights_app.data.models.Airport
 import com.jmart.flights_app.ui.customComponents.customHighlightTextView
-import timber.log.Timber
 
 @ExperimentalFoundationApi
 @Composable
-fun AirportDetailsPage(navController: NavHostController, airportName: String?) {
+fun AirportDetailsPage(navController: NavHostController, airportName: String?, pressOnBack: () -> Unit = {}) {
     val airportDetailsViewModel = hiltViewModel<AirportDetailViewModel>()
 
     // Runs only on initial composition
@@ -39,7 +43,6 @@ fun AirportDetailsPage(navController: NavHostController, airportName: String?) {
     val mAirPortDetails by airportDetailsViewModel.airPortDetails.observeAsState()
     val mClosestAirportDistance by airportDetailsViewModel.closestAirportDistance.observeAsState()
     val mClosestAirport by airportDetailsViewModel.closestAirport.observeAsState()
-    val isLoading by airportDetailsViewModel.isLoading.observeAsState()
 
     Box(
         modifier = Modifier
@@ -48,24 +51,21 @@ fun AirportDetailsPage(navController: NavHostController, airportName: String?) {
             .fillMaxWidth()
 
     ) {
-
-        Timber.e("tets is loading: ${isLoading}")
-//        isLoading?.let { DummyProgress(it) }
         ConstraintLayoutContent(
-            airportName,
             mAirPortDetails,
             mClosestAirport,
-            mClosestAirportDistance
+            mClosestAirportDistance,
+            pressOnBack
         )
     }
 }
 
 @Composable
 fun ConstraintLayoutContent(
-    name: String?,
     details: Airport?,
     nearestAirPort: Airport?,
-    nearestAirportDistance: String?
+    nearestAirportDistance: String?,
+    pressOnBack: () -> Unit
 ) {
     ConstraintLayout {
         Modifier
@@ -75,7 +75,19 @@ fun ConstraintLayoutContent(
         // Create references for the composables to constrain
         val (titleText, idHeaderText, latitudeHeaderText, longitudeHeaderText, nameHeaderText,
             cityHeaderText, countryIdHeaderText, nearestAirportHeaderText,
-            nearestAirportDistanceHeaderText) = createRefs()
+            nearestAirportDistanceHeaderText, arrowIcon) = createRefs()
+
+        Icon(
+            imageVector = Icons.Filled.ArrowBack,
+            tint = Color.Black,
+            contentDescription = null,
+            modifier = Modifier
+                .constrainAs(arrowIcon) {
+                    top.linkTo(parent.top)
+                }
+                .padding(12.dp)
+                .clickable(onClick = { pressOnBack() })
+        )
 
         Text(
             text = stringResource(R.string.airport_details_title),
@@ -84,9 +96,8 @@ fun ConstraintLayoutContent(
             fontWeight = FontWeight.Bold,
             textAlign = TextAlign.Center,
             modifier = Modifier.constrainAs(titleText) {
-                start.linkTo(parent.start, margin = 16.dp)
-                top.linkTo(parent.top, margin = 16.dp)
-                end.linkTo(parent.end, margin = 16.dp)
+                start.linkTo(arrowIcon.end, margin = 8.dp)
+                top.linkTo(parent.top, margin = 8.dp)
             }
         )
 
@@ -176,18 +187,6 @@ fun ConstraintLayoutContent(
                 "$nearestAirportDistance",
                 it
             )
-        }
-    }
-}
-
-
-@Composable
-fun DummyProgress(isLoading: Boolean) {
-    if (isLoading) {
-        CircularProgressIndicator()
-    } else {
-        Box() {
-
         }
     }
 }

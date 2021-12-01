@@ -1,5 +1,6 @@
 <resources>
     <string name="app_name">flights_app</string>
+    <string name="app_name_title">Flights App</string>
     <string name="bottom_nav_menu_map">Kaart</string>
     <string name="bottom_nav_menu_airport">Luchthavens</string>
     <string name="bottom_nav_menu_settings">Instellingen</string>

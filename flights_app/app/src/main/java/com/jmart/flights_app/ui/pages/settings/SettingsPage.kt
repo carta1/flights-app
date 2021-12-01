@@ -2,6 +2,7 @@ package com.jmart.flights_app.ui.pages.settings
 
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Arrangement.Absolute.Center
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -10,6 +11,7 @@ import androidx.compose.material.CheckboxDefaults.colors
 import androidx.compose.material.MaterialTheme
 import androidx.compose.runtime.*
 import androidx.compose.runtime.livedata.observeAsState
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -35,7 +37,7 @@ fun SettingsPage(navController: NavHostController) {
         modifier = Modifier
             .background(Color.White)
             .fillMaxHeight()
-            .fillMaxWidth()
+            .fillMaxWidth(),
     ) {
         constraintLayoutContent(settingsViewModel, distanceUnit)
     }
@@ -65,7 +67,6 @@ fun constraintLayoutContent(viewModel: SettingViewModel, distanceUnit: String?) 
         Modifier.constrainAs(titleText) {
             start.linkTo(parent.start, margin = 16.dp)
             top.linkTo(parent.top, margin = 16.dp)
-            end.linkTo(parent.end, margin = 16.dp)
         }.let {
             normalTextView(
                 stringResource(R.string.settings_page_title),

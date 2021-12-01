@@ -7,11 +7,16 @@ import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.Menu
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.BlendMode.Companion.Color
+import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
@@ -58,52 +63,81 @@ fun BottomNavigation() {
     val items = listOf(NavScreens.Map, NavScreens.Airport, NavScreens.Settings)
 
     val navController = rememberNavController()
+    val navBackStackEntry by navController.currentBackStackEntryAsState()
+    val currentRoute = navBackStackEntry?.destination?.route
     Scaffold(
         topBar = {
             TopAppBar(
                title =  {
                    Text(
-                       text = "Airports App",
+                       text = stringResource(R.string.app_name_title),
                        textAlign = TextAlign.Center
                    )
                },
-                navigationIcon = {
-                    IconButton(onClick = { }) {
-                        Icon(Icons.Filled.Menu,"")
-                    }
-                },
             )
         },
         bottomBar = {
-            BottomNavigation {
-                val navBackStackEntry by navController.currentBackStackEntryAsState()
-                val currentDestination = navBackStackEntry?.destination
-                items.forEach { screen ->
-                    BottomNavigationItem(
-                        icon = { Icon(screen.icon, contentDescription = null) },
-                        label = { Text(stringResource(screen.resourceId)) },
-                        selected = currentDestination?.hierarchy?.any { it.route == screen.route } == true,
-                        onClick = {
-                            navController.navigate(screen.route) {
-                                // Pop up to the start destination of the graph to
-                                // avoid building up a large stack of destinations
-                                // on the back stack as users select items
-                                popUpTo(navController.graph.findStartDestination().id) {
-                                    saveState = true
+            if (currentRoute != NavScreens.AirportDetails.route) {
+                BottomNavigation {
+                    val currentDestination = navBackStackEntry?.destination
+                    items.forEach { screen ->
+                        BottomNavigationItem(
+                            icon = { Icon(screen.icon, contentDescription = null) },
+                            label = { Text(stringResource(screen.resourceId)) },
+                            selected = currentDestination?.hierarchy?.any { it.route == screen.route } == true,
+                            onClick = {
+                                navController.navigate(screen.route) {
+                                    // Pop up to the start destination of the graph to
+                                    // avoid building up a large stack of destinations
+                                    // on the back stack as users select items
+                                    popUpTo(navController.graph.findStartDestination().id) {
+                                        saveState = true
+                                    }
+                                    // Avoid multiple copies of the same destination when
+                                    // reselecting the same item
+                                    launchSingleTop = true
+                                    // Restore state when reselecting a previously selected item
+                                    restoreState = true
                                 }
-                                // Avoid multiple copies of the same destination when
-                                // reselecting the same item
-                                launchSingleTop = true
-                                // Restore state when reselecting a previously selected item
-                                restoreState = true
                             }
-                        }
-                    )
+                        )
+                    }
+
                 }
 
             }
-
         }
+
+//        {
+//            BottomNavigation {
+//                val navBackStackEntry by navController.currentBackStackEntryAsState()
+//                val currentDestination = navBackStackEntry?.destination
+//                items.forEach { screen ->
+//                    BottomNavigationItem(
+//                        icon = { Icon(screen.icon, contentDescription = null) },
+//                        label = { Text(stringResource(screen.resourceId)) },
+//                        selected = currentDestination?.hierarchy?.any { it.route == screen.route } == true,
+//                        onClick = {
+//                            navController.navigate(screen.route) {
+//                                // Pop up to the start destination of the graph to
+//                                // avoid building up a large stack of destinations
+//                                // on the back stack as users select items
+//                                popUpTo(navController.graph.findStartDestination().id) {
+//                                    saveState = true
+//                                }
+//                                // Avoid multiple copies of the same destination when
+//                                // reselecting the same item
+//                                launchSingleTop = true
+//                                // Restore state when reselecting a previously selected item
+//                                restoreState = true
+//                            }
+//                        }
+//                    )
+//                }
+//
+//            }
+//
+//        }
     ) { innerPadding ->
         // set up navHost and bottom navigation
         NavHost(
@@ -120,10 +154,13 @@ fun BottomNavigation() {
                     type = NavType.StringType
                 })
             ) { backStackEntry ->
+                val airportName = backStackEntry.arguments?.getString(NavScreens.AirportDetails.args)?: return@composable
                 AirportDetailsPage(
                     navController,
-                    backStackEntry.arguments?.getString(NavScreens.AirportDetails.args)
-                )
+                    airportName
+                ) {
+                    navController.navigateUp()
+                }
             }
         }
     }

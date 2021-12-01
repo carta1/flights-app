@@ -35,7 +35,6 @@ class SettingViewModel @Inject constructor(
         }
     }
 
-
     fun setMilesDistanceUnit() {
         viewModelScope.launch {
             setUserDistanceUnit(MILES)

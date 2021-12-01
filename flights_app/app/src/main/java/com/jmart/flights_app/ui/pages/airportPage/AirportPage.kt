@@ -44,13 +44,9 @@ fun AirportPage(navController: NavHostController) {
         modifier = Modifier
             .background(Color.White)
             .fillMaxHeight()
+            .fillMaxWidth()
     ) {
-        Text(
-            text = stringResource(R.string.airport_page_title),
-            style = MaterialTheme.typography.h1
-        )
         constraintLayoutContent(airports ?: listOf<Airport>())
-
     }
 }
 
@@ -73,7 +69,6 @@ fun constraintLayoutContent(airports: List<Airport>) {
             modifier = Modifier.constrainAs(titleText) {
                 start.linkTo(parent.start, margin = 16.dp)
                 top.linkTo(parent.top, margin = 16.dp)
-                end.linkTo(parent.end, margin = 16.dp)
             }
         )
         Modifier.constrainAs(airportLister) {

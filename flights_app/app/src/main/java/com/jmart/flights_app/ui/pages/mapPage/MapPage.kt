@@ -19,6 +19,7 @@ import androidx.navigation.NavHostController
 import com.google.android.libraries.maps.CameraUpdateFactory
 import com.google.android.libraries.maps.GoogleMap
 import com.google.android.libraries.maps.MapView
+import com.google.android.libraries.maps.model.BitmapDescriptorFactory
 import com.google.android.libraries.maps.model.LatLng
 import com.google.maps.android.ktx.addMarker
 import com.google.maps.android.ktx.awaitMap
@@ -35,9 +36,8 @@ private const val AMS_AIRPORT = "Amsterdam-Schiphol Airport"
 @ExperimentalFoundationApi
 @Composable
 fun MapPage(navController: NavHostController) {
-    val exampleViewModel = hiltViewModel<MapPageViewModel>()
-    exampleViewModel.getAllAirports()
-    val airportsList by exampleViewModel.airPorts.observeAsState()
+    val mapPageViewModel = hiltViewModel<MapPageViewModel>()
+    val airportsList by mapPageViewModel.airPorts.observeAsState()
     Box(
         modifier = Modifier
             .background(Color.White)
@@ -133,19 +133,29 @@ private fun MapViewContainer(
         // adds the market and position to all the airports
         coordinates.forEach {
             googleMap.addMarker {
+                if (!it.isThisAirportTheFurthest) {
+                    icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_VIOLET))
+                }
+
                 position(LatLng(it.latitude, it.longitude))
                     .title(it.name)
             }
         }
 
         // Initial marker for reference purposes is AMS
-        googleMap.addMarker { position(cameraPosition).title(AMS_AIRPORT) }
-        googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(cameraPosition, INITIAL_ZOOM))
+        googleMap.addMarker {
+            position(cameraPosition).title(AMS_AIRPORT)
+            icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_VIOLET))
+            googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(cameraPosition, INITIAL_ZOOM))
+        }
 
+        // which is clicked it will navigate to the airportDetails
         googleMap.setOnMarkerClickListener(GoogleMap.OnMarkerClickListener { marker ->
-            // which is clicked it will navigate to the storeDetails
-            val markerName: String = marker.title ?: "N/A"
-            navController.navigate(NavScreens.AirportDetails.getNavigationRouteWithArgs(markerName))
+            // replaces the / for * because they are not allowed as arguments and then on the airport
+            // detail page they are added back
+            val markerName: String = marker.title.replace("/", "*")
+
+            navController.navigate(NavScreens.Map.getNavigationRouteWithArgs(markerName))
             false
         })
 
@@ -159,8 +169,4 @@ private fun MapViewContainer(
             mapView.awaitMap()
         }
     }
-}
-
-private fun getAirportInfo(airportName: String, airPortList: List<Airport>): Airport? {
-    return airPortList.find { airport -> airport.toString().contains(airportName) }
 }

@@ -1,4 +1,4 @@
-package com.jmart.flights_app.other.auxiliary
+package com.jmart.flights_app.data.models
 
 import androidx.lifecycle.Observer
 

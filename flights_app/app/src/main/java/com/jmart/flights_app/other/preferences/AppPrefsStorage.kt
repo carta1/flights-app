@@ -5,6 +5,7 @@ import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.core.edit
 import androidx.datastore.preferences.core.emptyPreferences
+import androidx.datastore.preferences.core.stringPreferencesKey
 import androidx.datastore.preferences.preferencesDataStore
 import com.jmart.flights_app.data.dataSource.storageHandler.PreferenceStorageHandler
 import dagger.hilt.android.qualifiers.ApplicationContext
@@ -15,6 +16,11 @@ import java.io.IOException
 import javax.inject.Inject
 import javax.inject.Singleton
 
+/** this class handles the data storage which is the new way android handles the preferences
+ * The DataStorage are handle with coroutines and the values are returned as flows because is a more
+ * efficient way to handle this type of data
+ */
+
 private const val USER_PREFERENCES_NAME = "user_preferences"
 
 @Singleton
@@ -22,15 +28,20 @@ class AppPrefsStorage @Inject constructor(
     @ApplicationContext val context: Context
 ) : PreferenceStorageHandler {
 
-    val Context.dataStore: DataStore<Preferences> by preferencesDataStore(
+    private val Context.dataStore: DataStore<Preferences> by preferencesDataStore(
         name = USER_PREFERENCES_NAME
     )
 
     private object PreferencesKeys {
-        //todo add keys when needed
+        val DISTANCE_UNIT = stringPreferencesKey("distance_unit")
     }
 
+    override suspend fun setUserDistanceUnit(distanceUnit: String) {
+        context.dataStore.setValue(PreferencesKeys.DISTANCE_UNIT, distanceUnit)
     }
+
+    override val getUserDistanceUnit: Flow<String>
+        get() = context.dataStore.getValueAsFlow(PreferencesKeys.DISTANCE_UNIT, "")
 
     /***
      * handy function to save key-value pairs in Preference. Sets or updates the value in Preference
@@ -71,3 +82,4 @@ class AppPrefsStorage @Inject constructor(
             preferences[key] ?: defaultValue
         }
     }
+}

@@ -3,7 +3,7 @@ package com.jmart.flights_app.data.models
 
 import com.squareup.moshi.Json
 
-data class Flights(
+data class Flight(
     @Json(name = "airlineId")
     val airlineId: String = "",
     @Json(name = "flightNumber")

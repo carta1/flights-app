@@ -1,11 +1,37 @@
 <resources>
     <string name="app_name">flights_app</string>
+    <string name="app_name_title">Flights App</string>
     <string name="bottom_nav_menu_map">Map</string>
     <string name="bottom_nav_menu_airport">Airports</string>
+    <string name="bottom_nav_menu_settings">Settings</string>
 
     // maps page
     <string name="maps_page_airports_title">Airports</string>
     <string name="maps_api_key">AIzaSyBpgP8PaTYP1fEcFC-igdwjxkXJQSBa1PM</string>
 
+    // airport details page
+    <string name="airport_details_title">Airport details</string>
+    <string name="airport_details_id">Id:</string>
+    <string name="airport_details_latitude">Latitude:</string>
+    <string name="airport_details_longitude">Longitude:</string>
+    <string name="airport_details_name">Name:</string>
+    <string name="airport_details_city">City:</string>
+    <string name="airport_details_country_id">Country Id:</string>
+    <string name="airport_details_nearest_airport">Nearest airport:</string>
+    <string name="airport_details_nearest_airport_distance">Nearest airport distance:</string>
+
+    // airports page
+    <string name="airport_page_title">Departures from Schiphol to:</string>
+    <string name="airport_page_airport">Airport:</string>
+    <string name="airport_page_distance">Distance:</string>
+
+    // settings page
+    <string name="settings_page_title">Settings</string>
+    <string name="settings_page_distance_unit_kilometer">Units in Kilometers</string>
+    <string name="settings_page_distance_unit_mile">Units in Miles</string>
+
+    // units of distance
+    <string name="distance_unit_kilometers">%1$s Kilometers</string>
+    <string name="distance_unit_miles">%1$s Miles</string>
 
 </resources>

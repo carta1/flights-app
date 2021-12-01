@@ -1,0 +1,37 @@
+<resources>
+    <string name="app_name">flights_app</string>
+    <string name="app_name_title">Flights App</string>
+    <string name="bottom_nav_menu_map">Mapa</string>
+    <string name="bottom_nav_menu_airport">Aeropuertos</string>
+    <string name="bottom_nav_menu_settings">Configuracion</string>
+
+    // maps page
+    <string name="maps_page_airports_title">Aeropuertos</string>
+    <string name="maps_api_key">AIzaSyBpgP8PaTYP1fEcFC-igdwjxkXJQSBa1PM</string>
+
+    // airport details page
+    <string name="airport_details_title">Detalles de aeropuerto</string>
+    <string name="airport_details_id">Id:</string>
+    <string name="airport_details_latitude">Latitud:</string>
+    <string name="airport_details_longitude">Longitud:</string>
+    <string name="airport_details_name">Nombre:</string>
+    <string name="airport_details_city">Ciudad:</string>
+    <string name="airport_details_country_id">Pais Id:</string>
+    <string name="airport_details_nearest_airport">Aeropuerto cercano:</string>
+    <string name="airport_details_nearest_airport_distance">Aeropuerto cercano por distancia:</string>
+
+    // airports page
+    <string name="airport_page_title">Salidadas de Schiphol para:</string>
+    <string name="airport_page_airport">Aeropuerto:</string>
+    <string name="airport_page_distance">Distancia:</string>
+
+    // settings page
+    <string name="settings_page_title">Configuracion</string>
+    <string name="settings_page_distance_unit_kilometer">Unidades en Kilometros</string>
+    <string name="settings_page_distance_unit_mile">Unidades en millas</string>
+
+    // units of distance
+    <string name="distance_unit_kilometers">%1$s Kilometros</string>
+    <string name="distance_unit_miles">%1$s Millas</string>
+
+</resources>

@@ -24,7 +24,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import com.jmart.flights_app.R
 import com.jmart.flights_app.data.models.Airport
-import com.jmart.flights_app.ui.pages.airportPage.airportDetails.customHighlightTextView
+import com.jmart.flights_app.ui.customComponents.customHighlightTextView
 
 const val SCHIPHOL_AIRPORT_ID = "AMS"
 const val KILOMETER = "km"

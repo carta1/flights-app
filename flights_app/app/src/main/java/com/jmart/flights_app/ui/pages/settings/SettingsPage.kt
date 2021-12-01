@@ -8,7 +8,6 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.material.Checkbox
 import androidx.compose.material.CheckboxDefaults.colors
 import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Text
 import androidx.compose.runtime.*
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.ExperimentalComposeUiApi
@@ -16,14 +15,13 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import com.jmart.flights_app.R
+import com.jmart.flights_app.ui.customComponents.normalTextView
 import com.jmart.flights_app.ui.pages.airportPage.MILES
 
 @ExperimentalComposeUiApi
@@ -145,19 +143,4 @@ fun constraintLayoutContent(viewModel: SettingViewModel, distanceUnit: String?) 
             }
         )
     }
-}
-
-@Composable
-fun normalTextView(
-    text: String, color: Color, fontWeight: FontWeight, modifier: Modifier,
-    textStyle: TextStyle = MaterialTheme.typography.body2
-) {
-    Text(
-        text = text,
-        style = textStyle,
-        color = color,
-        fontWeight = fontWeight,
-        textAlign = TextAlign.Center,
-        modifier = modifier
-    )
 }

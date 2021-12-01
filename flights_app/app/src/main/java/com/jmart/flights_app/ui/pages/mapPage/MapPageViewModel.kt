@@ -72,8 +72,6 @@ class MapPageViewModel @Inject constructor(
                 }
             }
         }
-
-
         val furthestAirports = listOfDistances.sortedByDescending { it.distanceToInUnit }.take(2)
 
         setFurthestAirportsExtraDate(furthestAirports, mAirports )

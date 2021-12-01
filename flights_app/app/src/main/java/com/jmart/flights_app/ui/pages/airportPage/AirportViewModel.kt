@@ -1,14 +1,10 @@
 package com.jmart.flights_app.ui.pages.airportPage
 
-import android.content.Context
 import android.location.Location
-import androidx.compose.runtime.Composable
-import androidx.compose.ui.platform.LocalContext
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.jmart.flights_app.R
 import com.jmart.flights_app.data.models.Airport
 import com.jmart.flights_app.data.models.Flight
 import com.jmart.flights_app.data.useCases.GetAirPorts
@@ -21,17 +17,17 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class AirportViewModel  @Inject constructor (
+class AirportViewModel @Inject constructor(
     private val getAirports: GetAirPorts,
     private val getFlights: GetFlights,
     private val getUserDistanceUnit: GetUserDistanceUnit
-): ViewModel() {
+) : ViewModel() {
     private val _airPorts = MutableLiveData<List<Airport>?>()
     val airPorts: LiveData<List<Airport>?> = _airPorts
 
 
     fun getAllAirports() {
-        viewModelScope.launch{
+        viewModelScope.launch {
             val airportsResult = getAirports.invoke()
             val flightsResult = getFlights.invoke()
 
@@ -41,30 +37,42 @@ class AirportViewModel  @Inject constructor (
         }
     }
 
-    private fun getClosestAirport(airportList: List<Airport>?, flightList: List<Flight>?, userUnit: String){
+    private fun getClosestAirport(
+        airportList: List<Airport>?,
+        flightList: List<Flight>?,
+        userUnit: String
+    ) {
+        // get's Schiphols details from the airport list
         val schipholDetails = airportList?.firstOrNull { it.id == SCHIPHOL_AIRPORT_ID }
-        val schipholLocation: Location = Location("").apply{
-            latitude = schipholDetails?.latitude?: 0.0
-            longitude = schipholDetails?.longitude?: 0.0
+
+        // Make a Location variable from the schipols location details
+        val schipholLocation: Location = Location("").apply {
+            latitude = schipholDetails?.latitude ?: 0.0
+            longitude = schipholDetails?.longitude ?: 0.0
         }
 
+        // map the airports that have destinations from schipol that day
         val airportsIdList = flightList?.map { it.arrivalAirportId }?.toSet()
 
         if (airportsIdList != null) {
-            airportList?.
-            filter { airportsIdList.contains(it.id)}
+            airportList?.filter { airportsIdList.contains(it.id) }
         }
+
+        // gets the airports distance to Schiphol and makes the distance a string with two decimals
+        // and the distance unit according to user preferences in the settings
         if (airportList != null) {
             for (location in airportList) {
-                val loc = Location("").apply{
+                val loc = Location("").apply {
                     latitude = location.latitude
                     longitude = location.longitude
                 }
-                location.distanceToAms = DistanceUtils.convertFloatToDoubleInKm(schipholLocation.distanceTo(loc))
-                location.distanceToAmsAsString = DistanceUtils.getUserDistanceUnit(schipholLocation.distanceTo(loc), userUnit)
+                location.distanceToAms =
+                    DistanceUtils.convertFloatToDoubleInKm(schipholLocation.distanceTo(loc))
+                location.distanceToAmsAsString =
+                    DistanceUtils.getUserDistanceUnit(schipholLocation.distanceTo(loc), userUnit)
             }
         }
         val sortedAirportsList = airportList?.sortedBy { it.distanceToAms }
-        _airPorts.postValue(sortedAirportsList?.filter { it.distanceToAms != 0.0})
+        _airPorts.postValue(sortedAirportsList?.filter { it.distanceToAms != 0.0 })
     }
 }

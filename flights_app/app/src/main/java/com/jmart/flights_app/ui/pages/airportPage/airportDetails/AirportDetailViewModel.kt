@@ -12,7 +12,6 @@ import com.jmart.flights_app.other.utils.DistanceUtils
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
-import timber.log.Timber
 import java.util.*
 import javax.inject.Inject
 
@@ -68,6 +67,7 @@ class AirportDetailViewModel @Inject constructor(
         return airPortList?.find { airport -> airport.toString().contains(airportName) }
     }
 
+    // gets closest airport details and the distance from the current airport in view
     fun getClosestAirport(
         currentAirPortLocation: Location,
         airportList: List<Airport>?,
@@ -75,6 +75,7 @@ class AirportDetailViewModel @Inject constructor(
     ) {
         val distanceInMetersList = mutableListOf<Float>()
 
+        // creates a list of the airports distance from the selected airport in display
         if (airportList != null) {
             for (location in airportList) {
                 val loc = Location("").apply {
@@ -85,9 +86,14 @@ class AirportDetailViewModel @Inject constructor(
             }
         }
 
-        val closestAirportIndex = distanceInMetersList.indexOf(Collections.min(distanceInMetersList))
+        // gets the min distance from the list and saves the index
+        val closestAirportIndex =
+            distanceInMetersList.indexOf(Collections.min(distanceInMetersList))
+        // get the closest airport details according to the index
         val closestAirport = airportList?.get(closestAirportIndex)
-        val closestAirportDistance = DistanceUtils.getUserDistanceUnit(distanceInMetersList[closestAirportIndex], userUnits)
+        // get the closest airport distance with it's unit
+        val closestAirportDistance =
+            DistanceUtils.getUserDistanceUnit(distanceInMetersList[closestAirportIndex], userUnits)
 
         _closestAirport.postValue(closestAirport)
         _closestAirportDistance.postValue(closestAirportDistance)

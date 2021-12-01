@@ -27,8 +27,6 @@ import com.jmart.flights_app.R
 import com.jmart.flights_app.data.models.Airport
 import com.jmart.flights_app.ui.screens.NavScreens
 import kotlinx.coroutines.launch
-import java.net.URLEncoder
-import java.nio.charset.StandardCharsets
 
 private const val INITIAL_ZOOM = 5f
 private const val AMS_LAT = "52.30907"

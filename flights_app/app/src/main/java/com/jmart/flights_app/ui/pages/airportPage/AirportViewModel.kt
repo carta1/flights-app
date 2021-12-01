@@ -47,11 +47,6 @@ class AirportViewModel  @Inject constructor (
             latitude = schipholDetails?.latitude?: 0.0
             longitude = schipholDetails?.longitude?: 0.0
         }
-/* 1) get the flights list and and make a map with the airport ids
-   2) compare the airport codes with the airport list and make a new list of airports
-   3) find the distances of the airports
-   4) sort the list of airports in ascending order according to airport distance from ams
-*/
 
         val airportsIdList = flightList?.map { it.arrivalAirportId }?.toSet()
 

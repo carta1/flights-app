@@ -9,6 +9,7 @@ import androidx.compose.material.CircularProgressIndicator
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Modifier
@@ -30,12 +31,16 @@ import timber.log.Timber
 fun AirportDetailsPage(navController: NavHostController, airportName: String?) {
     val airportDetailsViewModel = hiltViewModel<AirportDetailViewModel>()
 
-    // replaces the * for / because they are part of the original airport name
-    airportDetailsViewModel.getAirportDetails(airportName?.replace("*", "/") ?: "")
+    // Runs only on initial composition
+    LaunchedEffect(key1 = Unit) {
+        // replaces the * for / because they are part of the original airport name
+        airportDetailsViewModel.getAirportDetails(airportName?.replace("*", "/") ?: "")
+    }
     val mAirPortDetails by airportDetailsViewModel.airPortDetails.observeAsState()
-    val mClosestAirport by airportDetailsViewModel.closestAirport.observeAsState()
     val mClosestAirportDistance by airportDetailsViewModel.closestAirportDistance.observeAsState()
+    val mClosestAirport by airportDetailsViewModel.closestAirport.observeAsState()
     val isLoading by airportDetailsViewModel.isLoading.observeAsState()
+
     Box(
         modifier = Modifier
             .background(Color.White)
@@ -45,7 +50,7 @@ fun AirportDetailsPage(navController: NavHostController, airportName: String?) {
     ) {
 
         Timber.e("tets is loading: ${isLoading}")
-        isLoading?.let { DummyProgress(it) }
+//        isLoading?.let { DummyProgress(it) }
         ConstraintLayoutContent(
             airportName,
             mAirPortDetails,

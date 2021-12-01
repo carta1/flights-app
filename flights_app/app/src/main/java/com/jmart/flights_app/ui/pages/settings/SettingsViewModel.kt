@@ -11,7 +11,6 @@ import com.jmart.flights_app.ui.pages.airportPage.MILES
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
-import timber.log.Timber
 import javax.inject.Inject
 
 @HiltViewModel
@@ -40,14 +39,12 @@ class SettingViewModel @Inject constructor(
     fun setMilesDistanceUnit() {
         viewModelScope.launch {
             setUserDistanceUnit(MILES)
-            Timber.e("miles set")
         }
     }
 
     fun setKilometerDistanceUnit() {
         viewModelScope.launch {
             setUserDistanceUnit(KILOMETER)
-            Timber.e("kilometers set")
         }
     }
 }

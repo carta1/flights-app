@@ -36,9 +36,8 @@ private const val AMS_AIRPORT = "Amsterdam-Schiphol Airport"
 @ExperimentalFoundationApi
 @Composable
 fun MapPage(navController: NavHostController) {
-    val exampleViewModel = hiltViewModel<MapPageViewModel>()
-    exampleViewModel.getAllAirports()
-    val airportsList by exampleViewModel.airPorts.observeAsState()
+    val mapPageViewModel = hiltViewModel<MapPageViewModel>()
+    val airportsList by mapPageViewModel.airPorts.observeAsState()
     Box(
         modifier = Modifier
             .background(Color.White)

@@ -22,11 +22,16 @@ class AirportViewModel @Inject constructor(
     private val getFlights: GetFlights,
     private val getUserDistanceUnit: GetUserDistanceUnit
 ) : ViewModel() {
+
     private val _airPorts = MutableLiveData<List<Airport>?>()
     val airPorts: LiveData<List<Airport>?> = _airPorts
 
+    init {
+        getAllAirports()
+    }
 
-    fun getAllAirports() {
+
+    private fun getAllAirports() {
         viewModelScope.launch {
             val airportsResult = getAirports.invoke()
             val flightsResult = getFlights.invoke()

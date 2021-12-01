@@ -42,7 +42,7 @@ class AirportDetailViewModel @Inject constructor(
 
             val result = getAirports.invoke()
             if (!result.isNullOrEmpty()) {
-                _airPorts.postValue(result)
+                _airPorts.value = result
             }
 
 
@@ -96,7 +96,7 @@ class AirportDetailViewModel @Inject constructor(
             DistanceUtils.getUserDistanceUnit(distanceInMetersList[closestAirportIndex], userUnits)
 
         _closestAirport.postValue(closestAirport)
-        _closestAirportDistance.postValue(closestAirportDistance)
+        _closestAirportDistance.value = closestAirportDistance
     }
 
 }

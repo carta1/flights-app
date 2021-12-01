@@ -24,7 +24,11 @@ class MapPageViewModel @Inject constructor(
     private val _airPorts = MutableLiveData<List<Airport>?>()
     val airPorts: LiveData<List<Airport>?> = _airPorts
 
-    fun getAllAirports() {
+    init {
+        getAllAirports()
+    }
+
+    private fun getAllAirports() {
         viewModelScope.launch {
             val result = getAirports.invoke()
             getFurthestAirportsFromEachOtherOther(result)

@@ -38,7 +38,6 @@ const val METERS_IN_KILOMETER = 1000
 @Composable
 fun AirportPage(navController: NavHostController) {
     val airportViewModel = hiltViewModel<AirportViewModel>()
-    airportViewModel.getAllAirports()
     val airports by airportViewModel.airPorts.observeAsState()
 
     Box(

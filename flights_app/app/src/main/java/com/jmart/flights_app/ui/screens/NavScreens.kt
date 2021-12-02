@@ -5,6 +5,7 @@ import androidx.annotation.StringRes
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.AccountBox
 import androidx.compose.material.icons.filled.LocationOn
+import androidx.compose.material.icons.filled.Star
 import androidx.compose.ui.graphics.vector.ImageVector
 import com.jmart.flights_app.R
 
@@ -31,7 +32,7 @@ sealed class NavScreens(
     object Airport : NavScreens(
         NavRoutes.AIRPORT.name,
         R.string.bottom_nav_menu_airport,
-        Icons.Default.LocationOn,
+        Icons.Default.Star,
         NavArgs.AIRPORT.name
     )
 

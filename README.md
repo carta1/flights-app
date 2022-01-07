@@ -18,7 +18,10 @@ This application is a basic airline app that shows all the airports in the world
 
 # Major libraries and components used
 - Google maps api, api key should be put inside the gradle.properties by adding this variable: GOOGLE_MAPS_API_KEY="ADD-YOUR-API-KEY"
-this is done to keep the unique api key secure
+this is done to keep the unique api key secure or adding the api key in the android manifest com.google.android.geo.API_KEY value:
+ <meta-data
+            android:name="com.google.android.geo.API_KEY"
+            android:value="api key" />
 - JetPack compose, new UI set of libraries for Android. No XML was used in this project
 - Retrofit, OKHttp, moshi, and gson for webcalls and management of the json
 - Hilt for dependency injection 
